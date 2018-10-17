@@ -1,0 +1,27 @@
+- name: add a new user      #Linuxユーザの作成
+  user:
+    name: "{{ item.name }}"
+    uid: "{{ item.uid }}"
+    state: present
+  with_items:
+    - "{{ unix_users }}"
+
+- name: mkdir .ssh          #.sshフォルダの作成
+  file:
+    dest: "/home/{{ item.name }}/.ssh/"
+    state: directory
+    owner: "{{ item.name }}"
+    group: "{{ item.group }}"
+    mode: 0700
+  with_items:
+    - "{{ unix_users }}"
+
+- name: authorized key is deployed
+  copy:
+    src: "/home/bastion_admin/publickey/{{ item.name }}"
+    dest: "/home/{{ item.name }}/.ssh/authorized_keys"
+    owner: "{{ item.name }}"
+    group: "{{ item.group }}"
+    mode: 0600
+  with_items:
+    - "{{ unix_users }}"

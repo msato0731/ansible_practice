@@ -1,0 +1,41 @@
+---
+- hosts: tensorflow
+  sudo: yes
+  tasks:
+    - name: install unzip
+      yum: name=unzip state=latest
+
+    - name: unzip pyenv
+      unarchive: src=./pyenv-1.2.4.zip dest=/home/vagrant 
+
+    - name: move pyenv
+      file: src=/home/vagrant/pyenv-1.2.4 dest=/home/vagrant/.pyenv/ state=directory
+
+    - name: add bashrc
+      lineinfile: dest=/home/vagrant/.bashrc line='{{ item.line }}'
+      with_items: 
+       - line: 'export PYENV_ROOT="$HOME/.pyenv"' 
+       - line: 'export PYENV_ROOT="$PYENV_ROOT/bin:$PATH"' 
+       - line: 'eval "$(pyenv init -)"' 
+       - line: 'export PATH="$PYENV_ROOT/versions/anaconda3-5.1.0/bin/:$PATH"'
+
+    - name: pyenv install anaconda
+      shell: pyenv install anaconda3-5.1.0
+
+    - name: pyenv rehash
+      shell: pyenv rehash
+
+    - name: pyenv global anaconda
+      shell: pyenv global anaconda3-5.1.0
+
+    - name: conda update 
+      shell: conda update conda
+
+    - name: conda create
+      shell: conda create -n tensolflow python=3.6.4
+
+    - name: source activate
+      shell: source activate tensorflow
+
+    - name: pip install
+      shell: pip install --ignore-installed --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-1.8.0-cp36-cp36m-linux_x86_64.whl

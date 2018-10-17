@@ -1,0 +1,5 @@
+users:
+  - { name: 'hoge1', uid: '1011', password: 'password' }
+  - { name: 'hoge2', uid: '1012', password: 'password'  }
+  - { name: 'hoge3', uid: '1013',  password: 'password'}
+  - { name: 'hoge4', uid: '1014', password: 'password' }

@@ -1,0 +1,7 @@
+unix_groups:
+  - { name: "testgroup", gid: 1101, state: "present" }
+
+unix_users:
+  - { name: 'user1', uid: 1101, group: 'testgroup'  }
+  - { name: 'user2', uid: 1102, group: 'testgroup' }
+  - { name: 'user2', uid: 1103, group: 'testgroup' }
